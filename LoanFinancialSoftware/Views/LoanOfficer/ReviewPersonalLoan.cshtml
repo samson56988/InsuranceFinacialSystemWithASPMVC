@@ -1,0 +1,163 @@
+﻿@model LoanFinancialSoftware.Models.LoanServices.PersonalLoan
+
+@{
+    ViewBag.Title = "ReviewPersonalLoan";
+    Layout = "~/Views/Shared/LoanOfficer.cshtml";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <br />
+        
+            <h4 class="card-title">Personal Loan Application</h4>
+
+            <center>
+                <h3 class="text-danger" style="text-align:center">Application Details</h3>
+            </center>
+            
+           @using (Html.BeginForm())
+           {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })            
+                  <div class="row">                     
+                      <div class="col-md-6">
+                          <label>Party Name</label>
+                          <div class="form-group">
+                              @Html.DisplayFor(model => model.Fullname, new { htmlAttributes = new { @class = "form-control" } })
+
+                          </div>
+                      </div>
+                   </div>             
+                 @Html.HiddenFor(model => model.ApplicationID, new { htmlAttributes = new { @class = "form-control" } })                               
+                <div class="row">                   
+                    <div class="col-md-4">
+                        <label>Occupation</label>
+                        <div class="form-group">                          
+                            @Html.DisplayFor(model => model.Occupation, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                        <div class="col-md-4">
+                            <label>Marital Status</label>
+                            <div class="form-group">                            
+                                @Html.DisplayFor(model => model.MaritalStatus, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.MaritalStatus, "", new { @class = "text-danger" })
+                            </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Monthly Income</label>
+                        <div class="form-group">                          
+                                @Html.DisplayFor(model => model.MonthlyIncome, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.MonthlyIncome, "", new { @class = "text-danger" })
+                          
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Loan Amount</label>
+                       <div class="form-group">
+                        @Html.DisplayFor(model => model.LoanAmount, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Company Name</label>
+                        <div class="form-group">
+                            @Html.DisplayFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label>Company Address</label>
+                        <div class="form-group">
+                            @Html.DisplayFor(model => model.CompanyAddress, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>     
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Home Address</label>
+                        <div class="form-group">
+                            @Html.DisplayFor(model => model.HouseAddress, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HouseAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Collateral Name</label>
+                        <div class="form-group">
+                            @Html.DisplayFor(model => model.CollateralName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CollateralName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                       <label>Collateral Worth</label>
+                        <div class="form-group">
+                            @Html.DisplayFor(model => model.CollateralWorth, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CollateralWorth, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>  
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Bank Name</label>
+                        <div class="form-group">
+                            @Html.DisplayFor(model => model.BankName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.BankName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                   <div class="col-md-4">
+                        <label>Bank Account</label>
+                        <div class="form-group">
+                            @Html.DisplayFor(model => model.BankAccount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.BankAccount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>Application Date</label>
+                        <div class="form-group">
+                            @Html.DisplayFor(model => model.ApplicationDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ApplicationDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions no-color">
+                    <div class="col-md-offset-2 col-md-12">                    
+                        <a href="@Url.Action("TransactionAnalysis", "LoanOfficer")" class="btn btn-primary btn-rounded btn-fw">
+                            <i class="fas fa-check"></i> Transaction Analysis
+                        </a>
+                        <a href="@Url.Action("DownloadBankStatement", "LoanOfficer")" class="btn btn-primary btn-rounded btn-fw">
+                            <i class="fas fa-file"></i> Download Bank Statement                           
+                        </a>
+                        <a href="@Url.Action("Index", "Staff")" class="btn btn-primary btn-rounded btn-fw">
+                            <i class="fas fa-id-card"></i> Download GovermentID                            
+                        </a>
+                  
+                        <a href="@Url.Action("Index", "Staff")" class="btn btn-danger btn-rounded btn-fw">
+                            <i class="fas fa-ban"></i> Decline Loan                           
+                        </a>
+                    </div>
+                </div>
+
+                @*<div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Approve" class="" />
+                        </div>                                                 
+                    </div>
+
+                </div>*@
+               
+          
+           }
+        </div>
+    </div>
+    </div>
+
+
+
+
