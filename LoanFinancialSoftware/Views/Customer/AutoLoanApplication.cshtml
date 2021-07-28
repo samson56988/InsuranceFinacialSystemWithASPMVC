@@ -1,0 +1,138 @@
+﻿@model LoanFinancialSoftware.Models.LoanServices.AutoLoan
+
+@{
+    ViewBag.Title = "AutoLoanApplication";
+    Layout = "~/Views/Shared/Customer.cshtml";
+}
+
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Auto Loan Application</h4>
+            <p class="card-description">
+               Fill Out Information Correctly
+            </p>
+            <form class="forms-sample" method="post" action="AutoLoanApplication" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="exampleInputName1">Occupation</label>
+                    <input type="text" class="form-control" name="Occupation" required id="exampleInputName1" placeholder="Occupation">
+                </div>
+                <div class="form-group">
+                    <label for="exampleSelectGender">Marital Status</label>
+                    <select class="form-control" required id="exampleSelectGender" name="MaritalStatus">
+                        <option>---Select---</option>
+                        <option>Single</option>
+                        <option>Married</option>
+                        <option>Divorced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword4">Monthly Income</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-primary text-white">$</span>
+                        </div>
+                        <input type="text" name="MonthlyIncome" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Monthly Income">
+                        <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword4">Requested Loan Amount</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-primary text-white">$</span>
+                        </div>
+                        <input type="text" name="LoanAmount" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Requested Loan Amount">
+                        <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Bank Statement</label>
+                    <input type="file" name="BankStatementFile" required class="file-upload-default">
+                    <div class="input-group col-xs-12">
+                        <input type="text"name="BankStatement" class="form-control file-upload-info" disabled placeholder="Upload Recent Bank Statement">
+                        <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea1">House Address</label>
+                    <textarea class="form-control" name="HouseAddress" required id="exampleTextarea1" rows="4" placeholder="House Address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputCity1">Company Name</label>
+                    <input type="text" class="form-control" id="exampleInputCity1" required name="CompanyName" placeholder="Company Name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea1">Company Address</label>
+                    <textarea class="form-control" name="CompanyAddress" required id="exampleTextarea1" rows="4" placeholder="Company Address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Govermennt ID</label>
+                    <input type="file" name="GoverementIDFile" required class="file-upload-default">
+                    <div class="input-group col-xs-12">
+                        <input type="text" name="GoverementID" class="form-control file-upload-info" disabled placeholder="Upload Goverment ID">
+                        <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputCity1">Collateral Name</label>
+                    <input type="text" class="form-control" id="exampleInputCity1" required name="CollateralName" placeholder="Collateral Name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword4">Collateral Worth</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-primary text-white">$</span>
+                        </div>
+                        <input type="text" name="CollateralWorth" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Colleteral Worth">
+                        <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleSelectGender">Bank Name</label>
+                    <select class="form-control" id="exampleSelectGender" required name="BankName">
+                        <option>---Select---</option>
+                        <option>First Bank</option>
+                        <option>Sky Bank</option>
+                        <option>Gt Bank</option>
+                        <option>Zenith Bank</option>
+                        <option>UBA</option>
+                        <option>FCMB</option>
+                        <option>Microfinace Bank</option>
+                        <option>Bank Of Africa</option>
+                        <option>Providus Bank</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputCity1">Bank Account No</label>
+                    <input type="text" class="form-control" id="exampleInputCity1" required name="BankAccount" placeholder="Bank Account">
+                </div>
+               
+                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

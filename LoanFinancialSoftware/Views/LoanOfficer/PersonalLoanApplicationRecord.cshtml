@@ -1,0 +1,71 @@
+﻿@model IEnumerable<LoanFinancialSoftware.Models.LoanServices.PersonalLoan>
+
+@{
+    ViewBag.Title = "PersonalLoanApplicationRecord";
+    Layout = "~/Views/Shared/LoanOfficer.cshtml";
+}
+
+
+
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title">Personal Loan Application</p>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table">
+                            <table class="table" id="example"  >
+                                <tr style="background-color:darkslateblue;color:white;">
+                                    <th>
+                                       <label>Party Name</label>
+                                    </th>
+                                    <th>
+                                       <label>Occupation</label>
+                                    </th>
+
+                                    <th>
+                                        <label>Monthly Income($)</label>
+                                    </th>
+                                    <th>
+                                        <label>Loan Request ($)</label>
+                                    </th>
+                                    <th>
+                                        <label>Review</label>
+                                    </th>
+                                </tr>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Fullname)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Occupation)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.MonthlyIncome)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LoanAmount)
+                                        </td>
+
+                                        <td>
+                                            
+                                          <a href="@Url.Action("ReviewPersonalLoan", "LoanOfficer", new { id = item.ApplicationID})" class="btn btn-primary btn-rounded btn-fw">Review</a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </table>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,73 @@
+﻿@model LoanFinancialSoftware.Models.FinancialAnalysis.PersonalLoanFinancialAnalysis
+
+@{
+    ViewBag.Title = "TransactionAnalysis";
+    Layout = "~/Views/Shared/LoanOfficer.cshtml";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <br />
+
+            <h4 class="card-title">Personal Loan Application</h4>
+
+            <center>
+                <h3 class="text-danger" style="text-align:center">Financial Analysis</h3>
+            </center>
+
+            <center>
+                <h5 class="text-danger" style="text-align:center">Calculate Total Intrest</h5>
+                <label class="text-danger" style="text-align:center">Principal Loan Amount</label>
+              <label class="text-danger" style="text-align:center">@Html.DisplayFor(model=>model.PrincipalLoan)</label>
+            </center>
+
+            
+            @using (Html.BeginForm("TransactionAnalysis", "LoanOfficer", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    
+                                @Html.HiddenFor(model => model.ApplicationID, new { htmlAttributes = new { @class = "form-control" } })                                                          
+                                @Html.HiddenFor(model => model.PrincipalLoan, new { htmlAttributes = new { @class = "form-control"  } })
+                                @Html.HiddenFor(model => model.Regno, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.LoanTerm,"Loan Term(Yearly)", htmlAttributes: new { @class = "control-label col-md-6" })
+                            <div class="form-group">
+                                @Html.EditorFor(model => model.LoanTerm, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.LoanTerm, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.IntrestRate,"Intrest Rate(%)", htmlAttributes: new { @class = "control-label col-md-6" })
+                            <div class="form-group">
+                                @Html.EditorFor(model => model.IntrestRate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.IntrestRate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions no-color">
+                        <div class="col-md-offset-2 col-md-12">
+                            <button type="submit" class="btn btn-primary btn-rounded btn-fw">
+                                <i class="fas fa-calculator"></i> Compute 
+                            </button>
+                            <a href="@Url.Action("SendloanTermandcondition", "LoanOfficer")" class="btn btn-primary btn-rounded btn-fw">
+                                <i class="fas fa-user"></i> Foward to Client
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            }
+            
+
+        </div>
+
+    </div>
+</div>
