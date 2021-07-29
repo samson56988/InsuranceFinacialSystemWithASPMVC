@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -32,6 +33,15 @@ namespace LoanFinancialSoftware.Models.AgreementForm
         public string lastname { get; set; }
 
         public string EmailID { get; set; }
+
+      
+        public DateTime  PaymentDueDate { get; set; }
+
+        public Decimal AmountPaid { get; set; }
+
+        public string Isdue { get; set; }
+
+
 
         
 

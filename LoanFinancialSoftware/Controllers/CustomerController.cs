@@ -9,6 +9,8 @@ using LoanFinancialSoftware.Config;
 using System.Data;
 using System.IO;
 using LoanFinancialSoftware.Models.AgreementForm;
+using System.Web.Security;
+
 namespace LoanFinancialSoftware.Controllers
 {
     public class CustomerController : Controller
@@ -44,7 +46,7 @@ namespace LoanFinancialSoftware.Controllers
         [HttpPost]
         public ActionResult AutoLoanApplication(AutoLoan auto)
         {
-            
+
             string filename = Path.GetFileNameWithoutExtension(auto.BankStatementFile.FileName);
             string extension = Path.GetExtension(auto.BankStatementFile.FileName);
             filename = filename + DateTime.Now.ToString("yymmssfff") + extension;
@@ -61,7 +63,7 @@ namespace LoanFinancialSoftware.Controllers
 
             using (SqlConnection con = new SqlConnection(StoreConnections.GetConnection()))
             {
-               
+
                 string Username = (string)Session["Username"];
                 List<AutoLoan> loan = new List<AutoLoan>();
                 using (SqlCommand cmd2 = new SqlCommand("Select RegistrationID from CustomerRegistration where Username  = '" + Username + "' ", con))
@@ -80,8 +82,8 @@ namespace LoanFinancialSoftware.Controllers
 
                         auto.RegistrationNo = Convert.ToInt32(row["RegistrationID"].ToString());
 
-                            
-                            
+
+
                     };
 
                     con.Close();
@@ -205,7 +207,7 @@ namespace LoanFinancialSoftware.Controllers
                 return View();
             }
 
-            
+
         }
 
         public ActionResult PayDayLoanApplication()
@@ -214,7 +216,7 @@ namespace LoanFinancialSoftware.Controllers
             {
                 return RedirectToAction("Login", "Authentication");
             }
-           
+
             return View();
         }
 
@@ -440,7 +442,7 @@ namespace LoanFinancialSoftware.Controllers
                     cmd.Parameters.AddWithValue("@CompanyAddress", debt.CompanyAddress);
                     cmd.Parameters.AddWithValue("@HouseAddress", debt.HouseAddress);
                     cmd.Parameters.AddWithValue("@GovermentID", debt.GovermentID);
-                    cmd.Parameters.AddWithValue("@CollateralName",debt.CollateralName);
+                    cmd.Parameters.AddWithValue("@CollateralName", debt.CollateralName);
                     cmd.Parameters.AddWithValue("@CollateralWorth", debt.CollateralWorth);
                     cmd.Parameters.AddWithValue("@BankName", debt.BankName);
                     cmd.Parameters.AddWithValue("@BankAccount", debt.BankAccount);
@@ -457,7 +459,7 @@ namespace LoanFinancialSoftware.Controllers
             }
 
 
-         
+
         }
 
         public ActionResult BusinessLoanApplication()
@@ -558,11 +560,234 @@ namespace LoanFinancialSoftware.Controllers
 
         }
 
-        public ActionResult ViewLoanAgeementStructure()
+        public ActionResult ApplicationFeedback()
         {
-            return View();
+            List<PersonalLoanAgreement> personal2 = new List<PersonalLoanAgreement>();
+            using (SqlConnection con = new SqlConnection(StoreConnections.GetConnection()))
+            {
+                PersonalLoanAgreement personal = new PersonalLoanAgreement();
+                string Username = (string)Session["Username"];
+
+                using (SqlCommand cmd2 = new SqlCommand("Select RegistrationID from CustomerRegistration where Username  = '" + Username + "' ", con))
+                {
+                    cmd2.Parameters.AddWithValue("Username", Session["Username"].ToString());
+                    if (con.State != System.Data.ConnectionState.Open)
+
+                        con.Open();
+                    SqlDataReader sdr = cmd2.ExecuteReader();
+
+                    DataTable dtProducts = new DataTable();
+
+                    dtProducts.Load(sdr);
+                    foreach (DataRow row in dtProducts.Rows)
+                    {
+
+                      personal.Regno  = Convert.ToInt32(row["RegistrationID"].ToString());
+                    
+
+
+
+                    };
+
+                    con.Close();
+                }
+
+                using (SqlCommand cmd = new SqlCommand("select * from PersonalFinacialAnalysis where CustomerRegistrationNo = '"+personal.Regno+ "' and CustomersDecision = 'Decision Pending'", con))
+                {
+                    if (con.State != System.Data.ConnectionState.Open)
+
+                        con.Open();
+
+                    SqlDataReader sdr = cmd.ExecuteReader();
+
+                    DataTable dtProducts = new DataTable();
+
+                    dtProducts.Load(sdr);
+
+                    foreach (DataRow row in dtProducts.Rows)
+                    {
+                        personal2.Add(
+                            new PersonalLoanAgreement
+                            {
+                                ApplicationID = Convert.ToInt32(row["ApplicationID"]),
+                                PrincipalLoan = Convert.ToDecimal(row["Principal"])
+                                
+                            }
+
+
+
+                            );
+                    }
+                    con.Close();
+                }
+            }
+        
+
+            return View(personal2);
+
+        }
+
+        public ActionResult ViewLoanAgeementFeedback(int id)
+        {
+            PersonalLoanAgreement personal = new PersonalLoanAgreement();
+            DataTable dtpersonal = new DataTable();
+            using (SqlConnection sqlcon = new SqlConnection(StoreConnections.GetConnection()))
+            {
+                sqlcon.Open();
+                string query = "select  * from PersonalLoan p inner join CustomerRegistration c on p.RegistrationID = c.RegistrationID inner join PersonalFinacialAnalysis pf on p.ApplicationID = pf.ApplicationID where p.ApplicationID = '" + id + "' ";
+                SqlDataAdapter sqlDa = new SqlDataAdapter(query, sqlcon);
+                sqlDa.Fill(dtpersonal);
+            }
+            if (dtpersonal.Rows.Count == 1)
+            {
+                personal.ApplicationID = Convert.ToInt32(dtpersonal.Rows[0][0].ToString());
+                personal.PrincipalLoan = Convert.ToDecimal(dtpersonal.Rows[0][28].ToString());
+                personal.IntrestRate = Convert.ToInt32(dtpersonal.Rows[0][30].ToString());
+                personal.LoanTerm = Convert.ToInt32(dtpersonal.Rows[0][29].ToString());
+                personal.TotalIntrest = Convert.ToDecimal(dtpersonal.Rows[0][32].ToString());
+                personal.TotalDailyIntrest = Convert.ToDecimal(dtpersonal.Rows[0][31].ToString());
+                personal.RepaymentAmount = Convert.ToDecimal(dtpersonal.Rows[0][34].ToString());
+                personal.TotalRepaymentAmount = Convert.ToDecimal(dtpersonal.Rows[0][35].ToString());
+                personal.EmailID = dtpersonal.Rows[0][24].ToString();
+                personal.Regno = Convert.ToInt32(dtpersonal.Rows[0][1].ToString());
+                personal.HouseAddress = dtpersonal.Rows[0][9].ToString();
+                FormsAuthentication.SetAuthCookie(Convert.ToInt32(personal.ApplicationID).ToString(), true);
+                Session["ApplicationID"] = personal.ApplicationID.ToString();
+                return View(personal);
+
+
+            }
+            else
+
+                return View();
+
+
+        }
+
+        public ActionResult Agree(PersonalLoanAgreement personal)
+        {
+
+            using (SqlConnection con = new SqlConnection(StoreConnections.GetConnection()))
+            {
+
+                using (SqlCommand cmd = new SqlCommand("Update PersonalFinacialAnalysis set CustomersDecision = 'Agree' ,TransactionBeginDate = '"+DateTime.Now+"' , PaymentDueDate = '"+DateTime.Now.AddDays(30)+"' where ApplicationID  = '" + personal.ApplicationID + "' ", con))
+                {
+
+                    if (con.State != System.Data.ConnectionState.Open)
+
+                        con.Open();
+
+                    cmd.ExecuteNonQuery();
+                    return RedirectToAction("Dashboard");
+
+
+
+                }
+            }
+        }
+
+        public ActionResult DisAgree(PersonalLoanAgreement personal)
+        {
+
+            using (SqlConnection con = new SqlConnection(StoreConnections.GetConnection()))
+            {
+
+                using (SqlCommand cmd = new SqlCommand("Update PersonalFinacialAnalysis set CustomersDecision = 'Withdrawn' where ApplicationID  = '" + personal.ApplicationID + "' ", con))
+                {
+
+                    if (con.State != System.Data.ConnectionState.Open)
+
+                        con.Open();
+
+                    cmd.ExecuteNonQuery();
+                    return RedirectToAction("Dashboard");
+
+
+
+                }
+            }
+        }
+
+        public ActionResult TransactionAnalysis()
+        {
+            List<PersonalLoanAgreement> personal2 = new List<PersonalLoanAgreement>();
+            using (SqlConnection con = new SqlConnection(StoreConnections.GetConnection()))
+            {
+                PersonalLoanAgreement personal = new PersonalLoanAgreement();
+                string Username = (string)Session["Username"];
+
+                using (SqlCommand cmd2 = new SqlCommand("Select RegistrationID from CustomerRegistration where Username  = '" + Username + "' ", con))
+                {
+                    cmd2.Parameters.AddWithValue("Username", Session["Username"].ToString());
+                    if (con.State != System.Data.ConnectionState.Open)
+
+                        con.Open();
+                    SqlDataReader sdr = cmd2.ExecuteReader();
+
+                    DataTable dtProducts = new DataTable();
+
+                    dtProducts.Load(sdr);
+                    foreach (DataRow row in dtProducts.Rows)
+                    {
+
+                        personal.Regno = Convert.ToInt32(row["RegistrationID"].ToString());
+
+
+
+
+                    };
+
+                    con.Close();
+                }
+
+                using (SqlCommand cmd = new SqlCommand("select * from PersonalFinacialAnalysis where CustomerRegistrationNo = '" + personal.Regno + "' and CustomersDecision = 'Agree'", con))
+                {
+                    if (con.State != System.Data.ConnectionState.Open)
+
+                        con.Open();
+
+                    SqlDataReader sdr = cmd.ExecuteReader();
+
+                    DataTable dtProducts = new DataTable();
+
+                    dtProducts.Load(sdr);
+
+                    foreach (DataRow row in dtProducts.Rows)
+                    {
+                        personal2.Add(
+                            new PersonalLoanAgreement
+                            {
+                                ApplicationID = Convert.ToInt32(row["ApplicationID"]),
+                                PrincipalLoan = Convert.ToDecimal(row["Principal"]),
+                                LoanTerm =Convert.ToInt32(row["LoanTermPerYear"]),
+                                IntrestRate = Convert.ToDecimal(row["IntrestRate"]),
+                                TotalIntrest = Convert.ToDecimal(row["TotaLIntrest"]),
+                                RepaymentAmount = Convert.ToDecimal(row["RepaymentAmount"]),
+                                TotalRepaymentAmount = Convert.ToDecimal(row["TotalRepaymentAmount"]),
+                                AmountPaid = Convert.ToDecimal(row["AmountPaid"]),
+                                Isdue = row["Isdue"].ToString(),
+                                PaymentDueDate = Convert.ToDateTime(row["PaymentDueDate"])
+
+
+
+                            }
+
+
+
+                            );
+                    }
+                    con.Close();
+                }
+            }
+
+
+            return View(personal2);
+          
         }
 
 
+
     }
-}
+
+
+    }

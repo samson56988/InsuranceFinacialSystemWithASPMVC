@@ -297,23 +297,34 @@
                         </a>
                         <div class="collapse" id="form-elements">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("PersonalLoanApplication", "Customer")'>Personal Loan</a></li>
-                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("AutoLoanApplication", "Customer")'>Auto Loan</a></li>
-                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("PayDayLoanApplication", "Customer")'>Payday Loan</a></li>
-                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("BusinessLoanApplication", "Customer")'>Business Loan</a></li>
-                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("DebtConsolidationLoanApplication", "Customer")'>Consolidation Loan</a></li>
-                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("MortgageLoanApplication", "Customer")'>Mortgage Loan</a></li>
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("PersonalLoanApplicationRecord", "LoanOfficer")'>Personal Loan</a></li>
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("AutoLoan", "LoanOfficer")'>Auto Loan</a></li>
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("PayDayLoanApplicationRecord", "LoanOfficer")'>Payday Loan</a></li>
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("BusinessLoanApplicationRecord", "LoanOfficer")'>Business Loan</a></li>
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("ConsolidationLoanApplicationRecord", "LoanOfficer")'>Consolidation Loan</a></li>
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("MortgageLoanApplicationRecord", "LoanOfficer")'>Mortgage Loan</a></li>
                             </ul>
                         </div>
                     </li>
 
-
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" data-toggle="collapse" href="#form-analysis" aria-expanded="false" aria-controls="form-analysis">
                             <i class="fas fa-chart-line menu-icon"></i>
-                            <span class="menu-title">Transaction Analysis</span>
+                            <span class="menu-title">Loan Analysis</span>
+                            <i class="menu-arrow"></i>
                         </a>
+                        <div class="collapse" id="form-analysis">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("PersonalLoanAnalysis", "LoanOfficer")'>Personal Loan</a></li>
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("AutoLoan", "LoanOfficer")'>Auto Loan</a></li>
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("PayDayLoanApplicationRecord", "LoanOfficer")'>Payday Loan</a></li>
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("BusinessLoanApplicationRecord", "LoanOfficer")'>Business Loan</a></li>
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("ConsolidationLoanApplicationRecord", "LoanOfficer")'>Consolidation Loan</a></li>
+                                <li class="nav-item"> <a class="nav-link" href='@Url.Action("MortgageLoanApplicationRecord", "LoanOfficer")'>Mortgage Loan</a></li>
+                            </ul>
+                        </div>
                     </li>
+                   
 
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#ui-transactionRecords" aria-expanded="false" aria-controls="ui-transactionRecords">

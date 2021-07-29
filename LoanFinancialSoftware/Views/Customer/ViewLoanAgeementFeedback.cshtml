@@ -1,11 +1,9 @@
 ﻿@model LoanFinancialSoftware.Models.AgreementForm.PersonalLoanAgreement
 
 @{
-    ViewBag.Title = "SendloanTermandcondition";
-    Layout = "~/Views/Shared/LoanOfficer.cshtml";
+    ViewBag.Title = "ViewLoanAgeementFeedback";
+    Layout = "~/Views/Shared/Customer.cshtml";
 }
-
-
 
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
@@ -17,7 +15,16 @@
                         <img src="~/Assets/images/logo.svg" alt="logo" />
                     </div>
                 </center>
+                <div class="row">
+                    <center>
+                        <p class="text-danger" style="font:800;font-size:large">
+         Dear client please take time to review the loan analysis and payment structure assigned to your application with us.Also download and carefully read the PDF file which contains  terms and condition that is attached to our policy before agreeing to our service. Feel Free to contact us with any of our Company's Customer service contact info Thank you<br />                            
+                        </p>
+                    </center>
+                    
+                </div>
                 
+
                 <br />
                 <div class="row">
                     <div class="col-6">
@@ -32,14 +39,14 @@
                     <div class="col-6 text-end">
                         <p class="h3">Party Details</p>
                         <address>
-                            Registration No: @Html.DisplayFor(model=>model.Regno)<br>
-                            House Address: @Html.DisplayFor(model=>model.HouseAddress)<br>
-                            Email: @Html.DisplayFor(model=>model.EmailID)<br>
-                            
+                            Registration No: @Html.DisplayFor(model => model.Regno)<br>
+                            House Address: @Html.DisplayFor(model => model.HouseAddress)<br>
+                            Email: @Html.DisplayFor(model => model.EmailID)<br>
+
                         </address>
                     </div>
                     <div class="col-12 my-5">
-                        <h3>Application ID #@Html.DisplayFor(model=>model.ApplicationID)</h3>
+                        <h3>Application ID #@Html.DisplayFor(model => model.ApplicationID)</h3>
                     </div>
                 </div>
                 <table class="table ">
@@ -56,7 +63,7 @@
                             <p class="strong mb-1">Principal Loan</p>
                             <div class="text-muted">The sum of money to be borrowed</div>
                         </td>
-                        <td class="text-end">$@Html.DisplayFor(model=>model.PrincipalLoan)</td>
+                        <td class="text-end">$@Html.DisplayFor(model => model.PrincipalLoan)</td>
                     </tr>
                     <tr>
                         <td class="text-center">2</td>
@@ -64,8 +71,8 @@
                             <p class="strong mb-1">Intrest Rate Percent</p>
                             <div class="text-muted">The amount charged by a lender to a borrower for any form of debt given, generally expressed as a percentage of the principal.</div>
                         </td>
-                  
-                        <td class="text-end">@Html.DisplayFor(model=>model.IntrestRate)%</td>
+
+                        <td class="text-end">@Html.DisplayFor(model => model.IntrestRate)%</td>
                     </tr>
                     <tr>
                         <td class="text-center">3</td>
@@ -73,42 +80,55 @@
                             <p class="strong mb-1">Annual Loan Term</p>
                             <div class="text-muted">A loan term is the duration of the loan until it's paid off</div>
                         </td>
-                        <td class="text-end">@Html.DisplayFor(model=>model.LoanTerm) Year</td>
+                        <td class="text-end">@Html.DisplayFor(model => model.LoanTerm) Year</td>
                     </tr>
                     <tr>
                         <td colspan="2" class="strong text-end">Total Intrest</td>
-                        <td class="text-end">$@Html.DisplayFor(model=>model.TotalIntrest)</td>
+                        <td class="text-end">$@Html.DisplayFor(model => model.TotalIntrest)</td>
                     </tr>
                     <tr>
                         <td colspan="2" class="strong text-end">Total Daily Intrest</td>
-                        <td class="text-end">$@Html.DisplayFor(model=>model.TotalDailyIntrest)</td>
+                        <td class="text-end">$@Html.DisplayFor(model => model.TotalDailyIntrest)</td>
                     </tr>
                     <tr>
                         <td colspan="2" class="strong text-end">Repayment Amount(Monthly)</td>
-                        <td class="text-end">$@Html.DisplayFor(model=>model.RepaymentAmount)</td>
+                        <td class="text-end">$@Html.DisplayFor(model => model.RepaymentAmount)</td>
                     </tr>
                     <tr>
                         <td colspan="2" class="font-weight-bold text-uppercase text-end">Total Repayment Amount</td>
-                        <td class="font-weight-bold text-end">$@Html.DisplayFor(model=>model.TotalRepaymentAmount)</td>
-                    </tr>
-                    <tr>
-
+                        <td class="font-weight-bold text-end">$@Html.DisplayFor(model => model.TotalRepaymentAmount)</td>
                     </tr>
                 </table>
-             @using (Html.BeginForm("SendloanTermandconditions", "LoanOfficer", FormMethod.Post))
-               {
-                 @Html.HiddenFor(model=>model.ApplicationID)
                 <div class="form-actions no-color">
+
                     <div class="col-md-offset-2 col-md-12">
+                          @using (Html.BeginForm("Agree", "Customer",FormMethod.Post))
+                          {
+                              @Html.HiddenFor(model=>model.ApplicationID)
+                               <button type="submit" class="btn btn-primary btn-rounded btn-fw">
+                               <i class="fas fa-handshake"></i> Agree
+                                </button>
+                          }
+
+                        <br />
+                        @using (Html.BeginForm("Agree", "Customer", FormMethod.Post))
+                       {
+                        <a href="@Url.Action("DownloadBankStatement", "LoanOfficer")" class="btn btn-primary btn-rounded btn-fw">
+                            <i class="fas fa-file"></i> Download Policy
+                        </a>
+                       }
+                        <br />
+
+                      @using (Html.BeginForm("DisAgree", "Customer", FormMethod.Post))
+                      { 
                         <button type="submit" class="btn btn-primary btn-rounded btn-fw">
-                            <i class="fas fa-envelope"></i> Foward
+                            <i class="fas fa-ban"></i> Withdraw Application
                         </button>
+                        }
                     </div>
                 </div>
-              }
             </div>
         </div>
     </div>
 </div>
-
 

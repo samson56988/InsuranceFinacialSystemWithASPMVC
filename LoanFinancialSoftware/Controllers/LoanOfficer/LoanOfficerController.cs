@@ -27,6 +27,10 @@ namespace LoanFinancialSoftware.Controllers.LoanOfficer
 
         public ActionResult PersonalLoanApplicationRecord()
         {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["Username"])))
+            {
+                return RedirectToAction("Login", "StaffAuthentication");
+            }
             List<PersonalLoan> personal = new List<PersonalLoan>();
             using (SqlConnection con = new SqlConnection(StoreConnections.GetConnection()))
             {
@@ -458,10 +462,10 @@ namespace LoanFinancialSoftware.Controllers.LoanOfficer
         }
         
 
-        public ActionResult SendloanTermandcondition(PersonalLoanAgreement personal)
+        public ActionResult SendloanTermandcondition()
         {
             string ApplicationID = (string)Session["ApplicationID"];
-            
+            PersonalLoanAgreement personal = new PersonalLoanAgreement();
 
             DataTable dtpersonal = new DataTable();
             using (SqlConnection sqlcon = new SqlConnection(StoreConnections.GetConnection()))
@@ -481,7 +485,7 @@ namespace LoanFinancialSoftware.Controllers.LoanOfficer
                 personal.TotalDailyIntrest = Convert.ToDecimal(dtpersonal.Rows[0][31].ToString());
                 personal.RepaymentAmount = Convert.ToDecimal(dtpersonal.Rows[0][34].ToString());
                 personal.TotalRepaymentAmount = Convert.ToDecimal(dtpersonal.Rows[0][35].ToString());
-                personal.EmailID = dtpersonal.Rows[0][25].ToString();
+                personal.EmailID = dtpersonal.Rows[0][24].ToString();
                 personal.Regno = Convert.ToInt32(dtpersonal.Rows[0][1].ToString());
                 personal.HouseAddress = dtpersonal.Rows[0][9].ToString();
                 FormsAuthentication.SetAuthCookie(Convert.ToInt32(personal.ApplicationID).ToString(), true);
@@ -495,6 +499,82 @@ namespace LoanFinancialSoftware.Controllers.LoanOfficer
                 return View();
 
             
+        }
+
+
+        public ActionResult SendloanTermandconditions(PersonalLoanAgreement personal)
+        {
+            //string ApplicationID = (string)Session["ApplicationID"];
+            using (SqlConnection con = new SqlConnection(StoreConnections.GetConnection()))
+            {
+                
+                using (SqlCommand cmd = new SqlCommand("Update PersonalFinacialAnalysis set CustomersDecision = 'Decision Pending' where ApplicationID  = '" + personal.ApplicationID + "' ", con))
+                {
+
+                    if (con.State != System.Data.ConnectionState.Open)
+
+                        con.Open();
+
+                    cmd.ExecuteNonQuery();
+                    return RedirectToAction("PersonalLoanApplicationRecord");
+
+
+
+                }
+            }
+            
+        }
+
+        public ActionResult PersonalLoanAnalysis()
+        {
+
+            List<PersonalLoanAgreement> personal2 = new List<PersonalLoanAgreement>();
+            using (SqlConnection con = new SqlConnection(StoreConnections.GetConnection()))
+            {
+                
+
+                using (SqlCommand cmd = new SqlCommand("select * from PersonalFinacialAnalysis where CustomersDecision = 'Agree'", con))
+                {
+                    if (con.State != System.Data.ConnectionState.Open)
+
+                        con.Open();
+
+                    SqlDataReader sdr = cmd.ExecuteReader();
+
+                    DataTable dtProducts = new DataTable();
+
+                    dtProducts.Load(sdr);
+
+                    foreach (DataRow row in dtProducts.Rows)
+                    {
+                        personal2.Add(
+                            new PersonalLoanAgreement
+                            {
+                                ApplicationID = Convert.ToInt32(row["ApplicationID"]),
+                                PrincipalLoan = Convert.ToDecimal(row["Principal"]),
+                                LoanTerm = Convert.ToInt32(row["LoanTermPerYear"]),
+                                IntrestRate = Convert.ToDecimal(row["IntrestRate"]),
+                                TotalIntrest = Convert.ToDecimal(row["TotaLIntrest"]),
+                                RepaymentAmount = Convert.ToDecimal(row["RepaymentAmount"]),
+                                TotalRepaymentAmount = Convert.ToDecimal(row["TotalRepaymentAmount"]),
+                                AmountPaid = Convert.ToDecimal(row["AmountPaid"]),
+                                Isdue = row["Isdue"].ToString(),
+                                PaymentDueDate = Convert.ToDateTime(row["PaymentDueDate"])
+
+
+
+                            }
+
+
+
+                            );
+                    }
+                    con.Close();
+                }
+            }
+
+
+            return View(personal2);
         }
     }
 }

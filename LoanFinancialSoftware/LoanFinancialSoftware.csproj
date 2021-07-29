@@ -1908,6 +1908,10 @@
     <Content Include="Views\LoanOfficer\ReviewPersonalLoan.cshtml" />
     <Content Include="Views\LoanOfficer\TransactionAnalysis.cshtml" />
     <Content Include="Views\LoanOfficer\SendloanTermandcondition.cshtml" />
+    <Content Include="Views\Customer\ApplicationFeedback.cshtml" />
+    <Content Include="Views\Customer\ViewLoanAgeementFeedback.cshtml" />
+    <Content Include="Views\Customer\TransactionAnalysis.cshtml" />
+    <Content Include="Views\LoanOfficer\PersonalLoanAnalysis.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
